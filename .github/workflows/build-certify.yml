@@ -13,9 +13,18 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore Certify.sln
       - name: Build with MSBuild
-        run: msbuild Certify.sln /p:Configuration=Release
-      - name: Upload Certify.exe
-        uses: actions/upload-artifact@v4
-        with:
+        shell: pwsh
+        run: |
+          $msbuild = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
+          if (!(Test-Path $msbuild)) {
+            $msbuild = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe"
+          }
+          if (!(Test-Path $msbuild)) {
+            $msbuild = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
+          }
+          & $msbuild Certify.sln /p:Configuration=Release
+            - name: Upload Certify.exe
+              uses: actions/upload-artifact@v4
+              with:
           name: Certify-exe
           path: Certify/bin/Release/Certify.exe
