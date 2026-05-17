@@ -1,0 +1,21 @@
+name: Build Certify
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+      - name: Restore NuGet packages
+        run: nuget restore Certify.sln
+      - name: Build with MSBuild
+        run: msbuild Certify.sln /p:Configuration=Release
+      - name: Upload Certify.exe
+        uses: actions/upload-artifact@v3
+        with:
+          name: Certify-exe
+          path: Certify/bin/Release/Certify.exe
