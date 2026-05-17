@@ -23,8 +23,8 @@ jobs:
             $msbuild = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
           }
           & $msbuild Certify.sln /p:Configuration=Release
-            - name: Upload Certify.exe
-              uses: actions/upload-artifact@v4
-              with:
+      - name: Upload Certify.exe
+        uses: actions/upload-artifact@v4
+        with:
           name: Certify-exe
           path: Certify/bin/Release/Certify.exe
